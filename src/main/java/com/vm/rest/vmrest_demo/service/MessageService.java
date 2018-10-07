@@ -3,8 +3,11 @@ package com.vm.rest.vmrest_demo.service;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.ws.rs.core.Response;
+
 import com.vm.rest.vmrest_demo.databse.Databse;
 import com.vm.rest.vmrest_demo.model.Message;
+import com.vm.rest.vmrest_demo.model.exception.AppException;
 
 public class MessageService {
 
@@ -32,9 +35,11 @@ public class MessageService {
 		msgMap.put(message.getId(), message);
 		return message;
 	}
-	public Message getMessage(long msgId) throws Exception {
+	public Message getMessage(long msgId) throws AppException {
 		if(msgMap.get(msgId)== null) {
-			throw new Exception();
+			throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), 400, "Provided data not sufficient for insertion",
+					"Please verify that the feed is properly generated/set", "applink");
+
 		}
 		return msgMap.get(msgId);
 	}
